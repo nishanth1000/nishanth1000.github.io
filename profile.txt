@@ -27,11 +27,14 @@ name = Nishanth K
 # Leave initials blank to generate them from your name.
 initials = 
 role = Application Software Engineer 1, Oracle
+# Set resume_url to a hosted URL or a file path, e.g. resume.pdf.
+# View resume links appear below your role on desktop and mobile when a URL is set.
+resume_url = https://drive.google.com/file/d/1at0UaIUslDFFIi3885bvhRnWWXlFTaOy/view?usp=drivesdk
 location = Coimbatore, Tamil Nadu, India
 email = nishanthkanagaraj1000@gmail.com
-focus = Your area of interest
-sidebar_note = A space for my work, interests, and ideas.
-description = A personal portfolio of projects, skills, publications, and certificates.
+focus = 
+sidebar_note = 
+description = 
 
 [about]
 eyebrow = 
