@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A personal portfolio of projects, skills, publications, and certificates.">
+  <title>Portfolio</title>
+  <script>
+    // Start in light mode unless the visitor has explicitly chosen another theme.
+    (() => {
+      let theme;
+      try { theme = localStorage.getItem('portfolio-theme'); } catch {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = 'light';
+      }
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <style>
+    :root { color-scheme: light; --background: #fff; --text: #000; --sidebar-width: 280px; }
+    :root[data-theme="dark"] { color-scheme: dark; --background: #000; --text: #fff; }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 24px; }
+    body { margin: 0; background: var(--background); color: var(--text); font: 18px/1.75 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+    a { color: inherit; text-underline-offset: 4px; }
+    a:hover { text-decoration-thickness: 2px; }
+    button { font: inherit; }
+    :focus-visible { outline: 2px solid var(--text); outline-offset: 5px; }
+    ::selection { background: var(--text); color: var(--background); }
+    .skip-link { position: fixed; left: 16px; top: -100px; z-index: 5; padding: 10px 16px; background: var(--background); }
+    .skip-link:focus { top: 12px; }
+    .sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar-width); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 47px 28px 28px; overflow-y: auto; }
+    .sidebar > * { max-width: 100%; }
+    .person-name { margin: 0 0 6px; font-size: 29px; font-weight: 600; line-height: 1.3; letter-spacing: -.6px; }
+    .person-role { font-size: 17px; margin: 0; }
+    .person-note { font-size: 16px; margin: 26px 0 30px; }
+    .personal-details { margin: 0; width: 100%; }
+    .personal-details div { margin-bottom: 23px; }
+    .personal-details dt { font-size: 15px; margin-bottom: 2px; }
+    .personal-details dd { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
+    .sidebar-contact { font-size: 16px; margin: 3px 0 32px; align-self: center; }
+    .sidebar-foot { margin-top: auto; padding-top: 20px; font-size: 14px; }
+    .page { margin-left: var(--sidebar-width); }
+    .topbar, main { width: 100%; max-width: 1120px; margin-inline: auto; }
+    .topbar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 100px; padding: 22px 40px; background: var(--background); }
+    .mobile-identity { display: none; }
+    nav { min-width: 0; }
+    nav ul { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding: 0; margin: 0; }
+    nav a { display: block; padding: 5px 0; text-decoration: none; white-space: nowrap; font-size: 16px; }
+    nav a:hover { text-decoration: underline; }
+    nav a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 7px; }
+    .theme-toggle { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 0; border: 0; border-radius: 0; background: none; color: inherit; font-size: 15px; cursor: pointer; }
+    .theme-toggle:hover .theme-label { text-decoration: underline; text-underline-offset: 4px; }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .sun { display: none; }
+    [data-theme="dark"] .sun { display: block; }
+    [data-theme="dark"] .moon { display: none; }
+    main { padding: 39px 40px 28px; }
+    #portfolio-content { display: flex; flex-direction: column; min-height: calc(100dvh - 170px); }
+    main section { flex: 1; }
+    h1, h2, h3 { line-height: 1.35; font-weight: 600; }
+    h1 { font-size: 46px; letter-spacing: -1.2px; margin: 0 0 28px; }
+    h2 { font-size: 34px; letter-spacing: -.7px; margin: 0; }
+    h3 { font-size: 23px; margin: 0 0 10px; }
+    p { margin: 0 0 20px; }
+    .intro { max-width: 690px; font-size: 21px; margin-bottom: 23px; }
+    .about-note { max-width: 690px; font-size: 18px; }
+    .mobile-details { display: none; }
+    .section-heading { margin-bottom: 32px; }
+    .project-row { margin: 0 0 34px; }
+    .project-row:last-child { margin-bottom: 0; }
+    .project-row p { font-size: 18px; margin: 0; }
+    .tag { display: block; margin-top: 9px; font-size: 16px; overflow-wrap: anywhere; }
+    .skill-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
+    .certificate-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 24px; }
+    .certificate { min-width: 0; }
+    .certificate-preview { aspect-ratio: 4 / 3; display: grid; place-items: center; margin-bottom: 18px; overflow: hidden; }
+    .certificate-preview:not(.has-image) { border: 1px dashed var(--text); }
+    .certificate-image-link { display: block; width: 100%; height: 100%; min-height: 0; }
+    .certificate-image-link:focus-visible { outline-offset: -3px; }
+    .certificate-image { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .certificate-image-placeholder { padding: 16px; font-size: 16px; text-align: center; }
+    .certificate h3 { font-size: 21px; }
+    .certificate-list > .empty-state { grid-column: 1 / -1; }
+    .skill-group p, .certificate p { font-size: 18px; margin: 0; }
+    .publication { margin-bottom: 34px; }
+    .publication:last-child { margin-bottom: 0; }
+    .publication p { font-size: 18px; margin: 0 0 12px; }
+    .publication .publication-meta { font-size: 16px; }
+    .contact p { font-size: 19px; max-width: 660px; margin-bottom: 22px; }
+    .contact-email { font-size: 21px; overflow-wrap: anywhere; }
+    footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; padding-top: 60px; }
+    .import-status { padding: 0; margin-bottom: 28px; }
+    .import-status p { margin-bottom: 18px; }
+    .import-button { border: 1px solid var(--text); background: var(--background); color: var(--text); padding: 8px 13px; cursor: pointer; margin: 0 8px 8px 0; }
+    .import-button:hover { background: var(--text); color: var(--background); }
+    .entry-link { display: inline-block; margin-top: 12px; font-size: 17px; }
+    .entry-link + .entry-link { margin-left: 20px; }
+    .text-content { white-space: pre-line; }
+    .person-name, .person-role, h1, h3, .text-content, .publication-meta { overflow-wrap: anywhere; }
+    .empty-state { font-size: 18px; }
+    [hidden] { display: none !important; }
+    @media (max-width: 1150px) and (min-width: 1024px) {
+      :root { --sidebar-width: 250px; }
+      .sidebar { padding-inline: 26px; }
+      .topbar { padding-inline: 28px; gap: 18px; }
+      nav ul { gap: 8px 18px; }
+      main { padding-inline: 28px; }
+    }
+    @media (max-width: 1023px) {
+      .sidebar { display: none; }
+      .page { margin-left: 0; }
+      .topbar { position: static; flex-wrap: wrap; padding: 25px 28px 12px; gap: 22px; }
+      .mobile-identity { display: block; flex: 1; min-width: 0; font-size: 23px; font-weight: 600; line-height: 1.4; }
+      .mobile-identity a { text-decoration: none; overflow-wrap: anywhere; }
+      .mobile-identity span { display: block; font-size: 16px; font-weight: 400; }
+      .theme-toggle { order: 1; }
+      nav { order: 2; flex-basis: 100%; }
+      main { padding: 32px 28px 24px; }
+      #portfolio-content { min-height: calc(100dvh - 235px); }
+      .mobile-details { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 16px; margin-top: 28px; }
+      .mobile-details p { margin: 0; }
+      .certificate-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 580px) {
+      body { font-size: 17px; }
+      .topbar { padding-inline: 20px; gap: 20px 14px; }
+      nav ul { gap: 6px 19px; }
+      nav a { font-size: 16px; }
+      .theme-toggle { font-size: 14px; }
+      main { padding: 27px 20px 24px; }
+      h1 { font-size: 38px; letter-spacing: -.8px; }
+      h2 { font-size: 30px; }
+      h3 { font-size: 22px; }
+      .intro { font-size: 19px; }
+      .about-note, .project-row p, .skill-group p, .publication p, .certificate p { font-size: 17px; }
+      .contact p { font-size: 18px; }
+      .contact-email { font-size: 19px; }
+      .certificate-list { grid-template-columns: 1fr; }
+      footer { padding-top: 45px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <!-- All personal information is loaded from profile.txt. -->
+  <aside class="sidebar" aria-label="Personal information" hidden>
+    <p class="person-name" data-field="profile.name"></p>
+    <p class="person-role" data-field="profile.role"></p>
+    <p class="person-note text-content" data-field="profile.sidebar_note"></p>
+    <dl class="personal-details">
+      <div data-optional="profile.location"><dt>Based in</dt><dd data-field="profile.location"></dd></div>
+      <div data-optional="profile.email"><dt>Email</dt><dd><a data-email></a></dd></div>
+      <div data-optional="profile.focus"><dt>Focus</dt><dd data-field="profile.focus"></dd></div>
+    </dl>
+    <a class="sidebar-contact" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
+    <div class="sidebar-foot" data-field="profile.sidebar_footer"></div>
+  </aside>
+
+  <div class="page">
+    <header class="topbar">
+      <div class="mobile-identity"><a href="#about" data-field="profile.name">Portfolio</a><span data-field="profile.role"></span></div>
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="#about" aria-current="page">About me</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="#certificates">Certificates</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark mode" hidden>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20.9 13.3A9 9 0 0 1 10.7 3.1 9 9 0 1 0 20.9 13.3Z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+        <span class="theme-label">Dark mode</span>
+      </button>
+    </header>
+
+    <main id="content" tabindex="-1">
+      <noscript><p>Enable JavaScript to load the portfolio information from profile.txt.</p></noscript>
+      <div class="import-status" id="import-status" hidden>
+        <p id="import-message" role="status" aria-live="polite">Loading portfolio…</p>
+        <button class="import-button" id="retry-import" type="button" hidden>Try again</button>
+        <button class="import-button" id="choose-profile" type="button" hidden>Choose profile.txt</button>
+        <input id="profile-file" type="file" accept=".txt,text/plain" aria-label="Choose your portfolio text file" hidden>
+      </div>
+      <div id="portfolio-content" hidden>
+        <section id="about" aria-labelledby="about-title">
+          <h1 id="about-title">Hello, I’m <span data-field="profile.name"></span>.</h1>
+          <p class="intro text-content" data-field="about.intro"></p>
+          <p class="about-note text-content" data-field="about.bio"></p>
+          <div class="mobile-details"><p data-field="profile.location"></p><a data-email></a><p data-field="profile.focus" data-prefix="Focus: "></p></div>
+        </section>
+
+        <section id="projects" aria-labelledby="projects-title">
+          <div class="section-heading"><h2 id="projects-title">Projects</h2></div>
+          <div id="project-list"></div>
+        </section>
+
+        <section id="skills" aria-labelledby="skills-title">
+          <div class="section-heading"><h2 id="skills-title">Skills</h2></div>
+          <div class="skill-grid" id="skill-list"></div>
+        </section>
+
+        <section id="publications" aria-labelledby="publications-title">
+          <div class="section-heading"><h2 id="publications-title">Publications</h2></div>
+          <div id="publication-list"></div>
+        </section>
+
+        <section id="certificates" aria-labelledby="certificates-title">
+          <div class="section-heading"><h2 id="certificates-title">Certificates</h2></div>
+          <div class="certificate-list" id="certificate-list"></div>
+        </section>
+
+        <section class="contact" id="contact" aria-labelledby="contact-title">
+          <div class="section-heading"><h2 id="contact-title" data-field="contact.heading"></h2></div>
+          <p class="text-content" data-field="contact.message"></p>
+          <a class="contact-email" data-email></a>
+        </section>
+
+        <footer><span>© <span id="year"></span> <span data-field="profile.name"></span></span><a href="#content">Back to top</a></footer>
+      </div>
+    </main>
+  </div>
+
+  <template id="publication-template">
+    <article class="publication">
+      <div><h3></h3><p class="publication-meta"></p><p class="text-content"></p></div>
+    </article>
+  </template>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const themeButton = document.querySelector('.theme-toggle');
+    const themeLabel = themeButton.querySelector('.theme-label');
+    function updateThemeButton() {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      themeButton.setAttribute('aria-label', `Switch to ${next} mode`);
+      themeButton.title = `Switch to ${next} mode`;
+      themeLabel.textContent = `${next === 'dark' ? 'Dark' : 'Light'} mode`;
+    }
+    updateThemeButton();
+    themeButton.hidden = false;
+    themeButton.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('portfolio-theme', next); } catch {}
+      updateThemeButton();
+    });
+
+    // The text format uses named sections, key = value, and indented continuations.
+    function parseProfile(text) {
+      const fields = {
+        profile: ['name', 'initials', 'role', 'location', 'email', 'focus', 'sidebar_note', 'sidebar_footer', 'description'],
+        about: ['eyebrow', 'intro', 'bio'],
+        project: ['title', 'description', 'tools', 'url', 'source_url'],
+        skill: ['title', 'description'],
+        publication: ['title', 'authors', 'venue', 'year', 'summary', 'url'],
+        certificate: ['title', 'issuer', 'year', 'url', 'image', 'image_alt'],
+        contact: ['heading', 'message']
+      };
+      const data = { profile: {}, about: {}, contact: {}, project: [], skill: [], publication: [], certificate: [] };
+      const seen = new Set();
+      let section, entry, key;
+      text.replace(/^\uFEFF/, '').split(/\r?\n/).forEach((line, index) => {
+        const clean = line.trim();
+        const fail = message => { throw new Error(`Line ${index + 1}: ${message}`); };
+        if (!clean || clean.startsWith('#')) return;
+        const heading = clean.match(/^\[([a-z_]+)\]$/);
+        if (heading) {
+          section = heading[1];
+          if (!Object.hasOwn(fields, section)) fail(`Unknown section [${section}].`);
+          entry = Object.create(null);
+          key = null;
+          if (Array.isArray(data[section])) data[section].push(entry);
+          else {
+            if (seen.has(section)) fail(`Use only one [${section}] section.`);
+            data[section] = entry;
+            seen.add(section);
+          }
+          return;
+        }
+        if (!entry) fail('Start with a section such as [profile].');
+        if (/^\s/.test(line) && key) {
+          entry[key] += `${entry[key] ? '\n' : ''}${clean}`;
+          return;
+        }
+        const field = line.match(/^([a-z_]+)\s*=\s*(.*)$/);
+        if (!field) fail('Use field = value, or indent a continuation line.');
+        key = field[1];
+        if (!fields[section].includes(key)) fail(`Unknown field "${key}" in [${section}].`);
+        if (Object.hasOwn(entry, key)) fail(`The field "${key}" is listed twice.`);
+        entry[key] = field[2].trim();
+      });
+      if (!data.profile.name) throw new Error('Add name = Your Name under [profile].');
+      for (const type of ['project', 'skill', 'publication', 'certificate']) {
+        for (const [index, item] of data[type].entries()) {
+          if (!item.title) throw new Error(`Add a title to ${type} ${index + 1}, or remove that section.`);
+        }
+      }
+      return data;
+    }
+
+    function safeURL(value) {
+      if (/[\u0000-\u001f\u007f]/.test(value)) throw new Error('Keep each link on one line without control characters.');
+      const url = new URL(value, location.href);
+      const localRelative = location.protocol === 'file:' && url.protocol === 'file:'
+        && !/^(?:[a-z][a-z\d+.-]*:|[\\/])/i.test(value.trim());
+      if (!['http:', 'https:'].includes(url.protocol) && !localRelative) {
+        throw new Error('Links must use http://, https://, or a relative path on your website.');
+      }
+      return url.href;
+    }
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+    function addLink(parent, label, url) {
+      if (!url) return;
+      const link = element('a', 'entry-link', label);
+      link.href = safeURL(url);
+      parent.append(link);
+    }
+    function fillList(id, items, build, emptyMessage) {
+      const list = document.getElementById(id);
+      list.replaceChildren(...items.map(build));
+      if (!items.length) list.append(element('p', 'empty-state', emptyMessage));
+    }
+    function renderProfile(data) {
+      // Validate before changing the page, and treat every imported value as text.
+      for (const item of [...data.project, ...data.publication, ...data.certificate]) {
+        for (const key of ['url', 'source_url', 'image']) if (item[key]) safeURL(item[key]);
+      }
+      const email = data.profile.email || '';
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        throw new Error('Check the email field under [profile].');
+      }
+      data.profile.initials ||= data.profile.name.split(/\s+/).filter(Boolean).map(word => [...word][0]).slice(0, 2).join('').toUpperCase();
+      data.contact.heading ||= 'Let’s connect.';
+      const valueOf = path => { const [section, key] = path.split('.'); return data[section][key] || ''; };
+      document.querySelectorAll('[data-field]').forEach(node => {
+        const value = valueOf(node.dataset.field);
+        node.textContent = value ? (node.dataset.prefix || '') + value : '';
+        node.hidden = !value;
+      });
+      document.querySelectorAll('[data-optional]').forEach(node => { node.hidden = !valueOf(node.dataset.optional); });
+      document.querySelectorAll('[data-email]').forEach(link => {
+        link.textContent = email;
+        link.hidden = !email;
+        if (email) link.href = `mailto:${encodeURIComponent(email).replace(/%40/g, '@')}`;
+        else link.removeAttribute('href');
+      });
+      document.title = `${data.profile.name} — Portfolio`;
+      document.querySelector('meta[name="description"]').content = data.profile.description || `${data.profile.name} — personal portfolio.`;
+
+      fillList('project-list', data.project, item => {
+        const row = element('article', 'project-row');
+        const body = element('div');
+        body.append(element('h3', '', item.title), element('p', 'text-content', item.description || ''));
+        addLink(body, 'View project ↗', item.url);
+        addLink(body, 'Source code ↗', item.source_url);
+        row.append(body);
+        if (item.tools) row.append(element('span', 'tag', `Tools: ${item.tools}`));
+        return row;
+      }, 'No projects listed yet.');
+      fillList('skill-list', data.skill, item => {
+        const group = element('div', 'skill-group');
+        group.append(element('h3', '', item.title), element('p', 'text-content', item.description || ''));
+        return group;
+      }, 'No skills listed yet.');
+      fillList('publication-list', data.publication, item => {
+        const row = document.getElementById('publication-template').content.firstElementChild.cloneNode(true);
+        row.querySelector('h3').textContent = item.title;
+        row.querySelector('.publication-meta').textContent = [item.authors, item.venue, item.year].filter(Boolean).join(' · ');
+        row.querySelector('.text-content').textContent = item.summary || '';
+        addLink(row.querySelector('div'), 'Read publication ↗', item.url);
+        return row;
+      }, 'No publications listed yet.');
+      fillList('certificate-list', data.certificate, item => {
+        const row = element('article', 'certificate');
+        const preview = element('div', 'certificate-preview');
+        function showImagePlaceholder(message) {
+          preview.classList.remove('has-image');
+          preview.replaceChildren(element('span', 'certificate-image-placeholder', message));
+        }
+        if (item.image) {
+          const imageURL = safeURL(item.image);
+          const link = element('a', 'certificate-image-link');
+          link.href = imageURL;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.setAttribute('aria-label', `Open image of ${item.title} (new tab)`);
+          const image = element('img', 'certificate-image');
+          image.alt = item.image_alt || `${item.title} certificate`;
+          image.loading = 'lazy';
+          image.decoding = 'async';
+          image.referrerPolicy = 'no-referrer';
+          image.addEventListener('error', () => showImagePlaceholder('Image unavailable'), { once: true });
+          image.src = imageURL;
+          link.append(image);
+          preview.append(link);
+          preview.classList.add('has-image');
+        } else {
+          showImagePlaceholder('No image added');
+        }
+        row.append(preview);
+        row.append(element('h3', '', item.title), element('p', 'text-content', [item.issuer, item.year].filter(Boolean).join(' · ')));
+        addLink(row, 'View certificate ↗', item.url);
+        return row;
+      }, 'No certificates listed yet.');
+      document.querySelector('.sidebar').hidden = false;
+      document.getElementById('portfolio-content').hidden = false;
+      document.getElementById('import-status').hidden = true;
+      showSection(sectionFromHash());
+    }
+
+    const importStatus = document.getElementById('import-status');
+    const importMessage = document.getElementById('import-message');
+    const retryButton = document.getElementById('retry-import');
+    const chooseButton = document.getElementById('choose-profile');
+    const fileInput = document.getElementById('profile-file');
+    function showImportError(message) {
+      importStatus.hidden = false;
+      importMessage.textContent = message;
+      retryButton.hidden = location.protocol === 'file:';
+      chooseButton.hidden = false;
+    }
+    async function loadProfile() {
+      importStatus.hidden = false;
+      retryButton.hidden = true;
+      chooseButton.hidden = true;
+      if (location.protocol === 'file:') {
+        showImportError('Choose profile.txt to preview your portfolio. When both files are hosted together, it loads automatically.');
+        return;
+      }
+      importMessage.textContent = 'Loading portfolio…';
+      try {
+        const response = await fetch('profile.txt', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Could not load profile.txt (${response.status}). Keep it next to index.html.`);
+        renderProfile(parseProfile(await response.text()));
+      } catch (error) {
+        showImportError(`Couldn’t load the portfolio. ${error.message} Update profile.txt and try again, or choose it below.`);
+      }
+    }
+    retryButton.addEventListener('click', loadProfile);
+    chooseButton.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      try { renderProfile(parseProfile(await file.text())); }
+      catch (error) { showImportError(`Couldn’t read the portfolio. ${error.message}`); }
+      fileInput.value = '';
+    });
+
+    // Only the selected section is visible. Scrolling never changes sections.
+    const navLinks = [...document.querySelectorAll('nav a')];
+    const sections = [...document.querySelectorAll('main section')];
+    function sectionFromHash() {
+      const id = location.hash.slice(1);
+      return sections.some(section => section.id === id) ? id : 'about';
+    }
+    function showSection(id, moveFocus = false) {
+      const active = sections.find(section => section.id === id) || sections[0];
+      const focusWillBeHidden = sections.some(section => section !== active && section.contains(document.activeElement));
+      for (const section of sections) section.hidden = section !== active;
+      for (const link of navLinks) {
+        if (link.hash === `#${active.id}`) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      }
+      if (moveFocus || focusWillBeHidden) {
+        const heading = active.querySelector('h1, h2');
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+    document.addEventListener('click', event => {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const id = link.hash.slice(1);
+      if (id === 'content') {
+        event.preventDefault();
+        document.getElementById('content').focus({ preventScroll: true });
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        return;
+      }
+      if (!sections.some(section => section.id === id)) return;
+      event.preventDefault();
+      if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+      showSection(id, true);
+    });
+    addEventListener('hashchange', () => showSection(sectionFromHash()));
+    loadProfile();
+  </script>
+</body>
+</html>

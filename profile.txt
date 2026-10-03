@@ -1,0 +1,100 @@
+# YOUR PORTFOLIO CONTENT
+# Edit this file, save it, then refresh the webpage. Keep it next to index.html.
+# Use field = value. No quotation marks or commas between fields are needed.
+# To continue a paragraph on another line, indent the next line with two spaces.
+# Lines starting with # are comments. Keep section names and field names unchanged.
+# Duplicate a [project], [skill], [publication], or [certificate] section to add more.
+# Delete an entire repeated section to remove that entry. Leave optional links blank.
+# Links may be https:// addresses or paths to files on your own site.
+# Certificate pictures: save a JPG, PNG, WebP, or SVG beside index.html, then set
+# image = certificate-one.jpg (or use a full https:// image URL).
+# image_alt describes the picture for screen readers. Leave image blank for now.
+# Picture thumbnails can be opened at full size by clicking them.
+# Certificate links: set url = https://issuer.example/your-certificate to show
+# a separate "View certificate" link below that certificate. The picture is optional.
+
+[profile]
+name = Your Name
+# Leave initials blank to generate them from your name.
+initials =
+role = Your role / specialty
+location = Your city, country
+email = you@example.com
+focus = Your area of interest
+sidebar_note = A space for my work, interests, and ideas.
+sidebar_footer = A little curiosity goes a long way.
+description = A personal portfolio of projects, skills, publications, and certificates.
+
+[about]
+eyebrow = A little introduction
+intro = Welcome to my portfolio. This is where I share my work, explore ideas, and keep track of the things I’m learning.
+bio = Add a few words about your background, what you do, and the kind of problems you enjoy working on.
+
+[project]
+title = Project One
+description = Describe what you built, the problem it solves, and your contribution.
+tools = Your tools
+url =
+source_url =
+
+[project]
+title = Project Two
+description = Share the idea behind another project and how you brought it to life.
+tools = Your tools
+url =
+source_url =
+
+[project]
+title = Project Three
+description = A personal experiment, a collaboration, or something you learned by making.
+tools = Your tools
+url =
+source_url =
+
+[skill]
+title = Languages
+description = Add the languages you work with.
+
+[skill]
+title = Tools & technologies
+description = Add your go-to tools and frameworks.
+
+[skill]
+title = Areas of interest
+description = Add the topics you enjoy exploring.
+
+[publication]
+title = Publication title
+authors = Author(s)
+venue = Journal or publisher
+year = Year
+summary = Add a short summary of your publication.
+url =
+
+[certificate]
+title = Certificate name
+issuer = Issuing organization
+year = Year
+url =
+image =
+image_alt =
+
+[certificate]
+title = Certificate name
+issuer = Issuing organization
+year = Year
+url =
+image =
+image_alt =
+
+[certificate]
+title = Certificate name
+issuer = Issuing organization
+year = Year
+url =
+image =
+image_alt =
+
+[contact]
+heading = Let’s connect.
+message = Have a question, an idea, or something interesting to share? Say hello.
