@@ -3,32 +3,85 @@
 # Use field = value. No quotation marks or commas between fields are needed.
 # To continue a paragraph on another line, indent the next line with two spaces.
 # Lines starting with # are comments. Keep section names and field names unchanged.
-# Duplicate a [project], [skill], [publication], or [certificate] section to add more.
+# Duplicate an [education], [experience], [project], [skill], [publication], or
+# [certificate] section to add more entries. Entries appear in the order listed.
 # Delete an entire repeated section to remove that entry. Leave optional links blank.
 # Links may be https:// addresses or paths to files on your own site.
+# Website and document links open in a new tab.
+# Education and experience: title is required; all other fields are optional.
+# Use period for dates, e.g. 2022 – 2026 or July 2024 – Present.
+# Under [experience], set employment_type to Remote, Hybrid, or On-site.
+# Leave employment_type blank to hide it.
 # Certificate pictures: save a JPG, PNG, WebP, or SVG beside index.html, then set
 # image = certificate-one.jpg (or use a full https:// image URL).
 # image_alt describes the picture for screen readers. Leave image blank for now.
 # Picture thumbnails can be opened at full size by clicking them.
+# For a PDF certificate, use a PNG/JPG preview in image (PDFs cannot be image thumbnails).
+# Paths are relative to index.html, e.g. certificates/python-basic-preview.png.
 # Certificate links: set url = https://issuer.example/your-certificate to show
 # a separate "View certificate" link below that certificate. The picture is optional.
+# credential_id is optional and displays the certificate's identifier below its issuer.
 
 [profile]
-name = Your Name
+name = Nishanth K
 # Leave initials blank to generate them from your name.
-initials =
-role = Your role / specialty
-location = Your city, country
-email = you@example.com
+initials = 
+role = Application Software Engineer 1, Oracle
+location = Coimbatore, Tamil Nadu, India
+email = nishanthkanagaraj1000@gmail.com
 focus = Your area of interest
 sidebar_note = A space for my work, interests, and ideas.
-sidebar_footer = A little curiosity goes a long way.
 description = A personal portfolio of projects, skills, publications, and certificates.
 
 [about]
-eyebrow = A little introduction
-intro = Welcome to my portfolio. This is where I share my work, explore ideas, and keep track of the things I’m learning.
-bio = Add a few words about your background, what you do, and the kind of problems you enjoy working on.
+eyebrow = 
+intro = 
+bio = 
+
+[education]
+title = Master of Technology in Artificial Intelligence
+institution = IIT Madras
+period = 2026 - Present
+location = Chennai, Tamil Nadu, India
+description =
+
+[education]
+title = Bachelor of Technology in Computer Science and Engineering
+institution = Amrita Vishwa Vidyapeetham
+period = 2020 - 2024
+location = Coimbatore, Tamil Nadu, India
+description =
+
+[education]
+title = 10th and 12th Grade
+institution = SSVM Institutions
+period = 2006 - 2020
+location = Coimbatore, Tamil Nadu, India
+description =
+
+[experience]
+title = Application Software Engineer 1
+company = Oracle | Full-time
+period = Aug 2024 - Present
+location = Hyderabad, Telangana, India
+employment_type = Remote
+description =
+
+[experience]
+title = Project Intern
+company = Oracle | Internship
+period = Jan 2024 - Jul 2024
+location = Hyderabad, Telangana, India
+employment_type = Remote
+description =
+
+[experience]
+title = Project Intern
+company = Telesto Energy | Internship
+period = Sep 2023 - Dec 2023
+location = Coimbatore, Tamil Nadu, India
+employment_type = Hybrid
+description =
 
 [project]
 title = Project One
@@ -64,36 +117,57 @@ title = Areas of interest
 description = Add the topics you enjoy exploring.
 
 [publication]
-title = Publication title
-authors = Author(s)
-venue = Journal or publisher
-year = Year
-summary = Add a short summary of your publication.
-url =
+title = YoloV8-Powered Surveillance: Safeguarding Crops from Wildlife and Fire Hazards
+authors = 
+venue = IEEE
+year = 24 Jun, 2024
+summary = Agriculture is the backbone of India’s economy. However, the farmers are facing crop damage due to wild animals encounter and fire. The study has mainly intended to provide a solution for the prevention of wildife encounters into agricultural field and fire using Object Detection. This study mainly focuses on detection of fire and four distinct animals: Elephant, Wild Boar, Deer and Cow. The dataset contains 7000 images with annotated five categories of Object. We trained five YOLOv8 models (nano - YOLOv8n, small - YOLOv8s, medium - YOLOv8m, large - YOLOv81, extra-large — YOLOv8x) on our dataset. Raspberry Pi equipped with a Camera captures video of the crop field and applies Yolov8 (Object Detection Algorithm) to detect fire and wildife encounters and plays some loud noises to deter wild animals. The Farmer is notified with a photograph of Farm and class name of the animal detection made through a Telegram Bot. The trained medium YOLOv8m model has attained a mAP of 92.2%, proving its efficacy in identifying fire and wild animals. By integrating this device across farm field, real-time automated monitoring and alerts can be provided to farmers, minimizing crop losses.
+url = https://ieeexplore.ieee.org/document/10726246
 
 [certificate]
-title = Certificate name
-issuer = Issuing organization
-year = Year
-url =
-image =
-image_alt =
+title = Oracle Cloud Infrastructure 2025 Certified Generative AI Professional
+issuer = Oracle
+year = 21 May, 2025 -  21 May, 2027
+credential_id = 
+url = https://catalog-education.oracle.com/ords/certview/sharebadge_m?id=85B4FA82E0D26249A910B58EF10AABF39AFFC5282D7DC8CDBD797B7ADD11F217
+image = certificates/OCI_2025_AI_Professional.jpg
+image_alt = Oracle Cloud Infrastructure 2025 Certified Generative AI Professional
 
 [certificate]
-title = Certificate name
-issuer = Issuing organization
-year = Year
-url =
-image =
-image_alt =
+title = Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate
+issuer = Oracle
+year = 11 Mar, 2025 - 11 Mar, 2027
+credential_id = 
+url = https://catalog-education.oracle.com/ords/certview/sharebadge_m?id=C45B71AD983B00412A33AC418EA4BA43B08CC89D249B7BEF19638BCEB4048FF3
+image = certificates/OCI_2025_AI_Foundations.jpg
+image_alt = Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate
 
 [certificate]
-title = Certificate name
-issuer = Issuing organization
-year = Year
-url =
-image =
-image_alt =
+title = Python (Basic)
+issuer = HackerRank
+year = 17 Aug, 2022
+credential_id = 79cf1f76f463
+url = https://www.hackerrank.com/certificates/79cf1f76f463
+image = certificates/python_basic.png
+image_alt = HackerRank Python (Basic) certificate from HackerRank
+
+[certificate]
+title = SQL (Basic)
+issuer = HackerRank
+year = 10 Nov, 2021
+credential_id = 195bdf44a701
+url = https://www.hackerrank.com/certificates/195bdf44a701
+image = certificates/sql_basic.jpg
+image_alt = SQL (Basic) Certificate from HackerRank
+
+[certificate]
+title = Problem Solving (Basic)
+issuer = HackerRank
+year = 08 Sep, 2021
+credential_id = 0a6a66b0eb47
+url = https://www.hackerrank.com/certificates/0a6a66b0eb47
+image = certificates/problem_solving_basic.jpg
+image_alt = Problem Solving (Basic) Certificate from HackerRank
 
 [contact]
 heading = Let’s connect.

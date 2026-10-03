@@ -39,7 +39,7 @@
     .personal-details dt { font-size: 15px; margin-bottom: 2px; }
     .personal-details dd { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
     .sidebar-contact { font-size: 16px; margin: 3px 0 32px; align-self: center; }
-    .sidebar-foot { margin-top: auto; padding-top: 20px; font-size: 14px; }
+    .sidebar-foot { margin-top: auto; padding-top: 20px; font-size: 14px; overflow-wrap: anywhere; }
     .page { margin-left: var(--sidebar-width); }
     .topbar, main { width: 100%; max-width: 1120px; margin-inline: auto; }
     .topbar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 100px; padding: 22px 40px; background: var(--background); }
@@ -57,7 +57,7 @@
     [data-theme="dark"] .moon { display: none; }
     main { padding: 39px 40px 28px; }
     #portfolio-content { display: flex; flex-direction: column; min-height: calc(100dvh - 170px); }
-    main section { flex: 1; }
+    #portfolio-content > section { flex: 1; }
     h1, h2, h3 { line-height: 1.35; font-weight: 600; }
     h1 { font-size: 46px; letter-spacing: -1.2px; margin: 0 0 28px; }
     h2 { font-size: 34px; letter-spacing: -.7px; margin: 0; }
@@ -65,6 +65,14 @@
     p { margin: 0 0 20px; }
     .intro { max-width: 690px; font-size: 21px; margin-bottom: 23px; }
     .about-note { max-width: 690px; font-size: 18px; }
+    .about-subsection { max-width: 690px; margin-top: 44px; }
+    .about-subsection h2 { margin-bottom: 24px; font-size: 28px; }
+    .background-entry { margin-bottom: 28px; }
+    .background-entry:last-child { margin-bottom: 0; }
+    .background-entry h3 { margin-bottom: 6px; }
+    .background-entry p { margin: 0; }
+    .background-entry .entry-meta { margin-top: 4px; font-size: 16px; }
+    .background-entry .entry-description { margin-top: 12px; }
     .mobile-details { display: none; }
     .section-heading { margin-bottom: 32px; }
     .project-row { margin: 0 0 34px; }
@@ -83,6 +91,7 @@
     .certificate h3 { font-size: 21px; }
     .certificate-list > .empty-state { grid-column: 1 / -1; }
     .skill-group p, .certificate p { font-size: 18px; margin: 0; }
+    .certificate .credential-id { font-size: 16px; margin-top: 10px; overflow-wrap: anywhere; }
     .publication { margin-bottom: 34px; }
     .publication:last-child { margin-bottom: 0; }
     .publication p { font-size: 18px; margin: 0 0 12px; }
@@ -90,6 +99,8 @@
     .contact p { font-size: 19px; max-width: 660px; margin-bottom: 22px; }
     .contact-email { font-size: 21px; overflow-wrap: anywhere; }
     footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; padding-top: 60px; }
+    footer > a { margin-left: auto; }
+    .mobile-copyright { display: none; overflow-wrap: anywhere; }
     .import-status { padding: 0; margin-bottom: 28px; }
     .import-status p { margin-bottom: 18px; }
     .import-button { border: 1px solid var(--text); background: var(--background); color: var(--text); padding: 8px 13px; cursor: pointer; margin: 0 8px 8px 0; }
@@ -120,6 +131,7 @@
       #portfolio-content { min-height: calc(100dvh - 235px); }
       .mobile-details { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 16px; margin-top: 28px; }
       .mobile-details p { margin: 0; }
+      .mobile-copyright { display: inline; }
       .certificate-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 580px) {
@@ -154,7 +166,7 @@
       <div data-optional="profile.focus"><dt>Focus</dt><dd data-field="profile.focus"></dd></div>
     </dl>
     <a class="sidebar-contact" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
-    <div class="sidebar-foot" data-field="profile.sidebar_footer"></div>
+    <div class="sidebar-foot">© <span data-year></span> <span data-field="profile.name"></span></div>
   </aside>
 
   <div class="page">
@@ -163,6 +175,7 @@
       <nav aria-label="Main navigation">
         <ul>
           <li><a href="#about" aria-current="page">About me</a></li>
+          <li><a href="#education">Education</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#publications">Publications</a></li>
@@ -191,6 +204,15 @@
           <p class="intro text-content" data-field="about.intro"></p>
           <p class="about-note text-content" data-field="about.bio"></p>
           <div class="mobile-details"><p data-field="profile.location"></p><a data-email></a><p data-field="profile.focus" data-prefix="Focus: "></p></div>
+          <section class="about-subsection" aria-labelledby="experience-title">
+            <h2 id="experience-title">Experience</h2>
+            <div id="experience-list"></div>
+          </section>
+        </section>
+
+        <section id="education" aria-labelledby="education-title">
+          <div class="section-heading"><h2 id="education-title">Education</h2></div>
+          <div id="education-list"></div>
         </section>
 
         <section id="projects" aria-labelledby="projects-title">
@@ -219,7 +241,7 @@
           <a class="contact-email" data-email></a>
         </section>
 
-        <footer><span>© <span id="year"></span> <span data-field="profile.name"></span></span><a href="#content">Back to top</a></footer>
+        <footer><span class="mobile-copyright">© <span data-year></span> <span data-field="profile.name"></span></span><a href="#content">Back to top</a></footer>
       </div>
     </main>
   </div>
@@ -231,7 +253,7 @@
   </template>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.querySelectorAll('[data-year]').forEach(node => { node.textContent = new Date().getFullYear(); });
     const themeButton = document.querySelector('.theme-toggle');
     const themeLabel = themeButton.querySelector('.theme-label');
     function updateThemeButton() {
@@ -254,13 +276,15 @@
       const fields = {
         profile: ['name', 'initials', 'role', 'location', 'email', 'focus', 'sidebar_note', 'sidebar_footer', 'description'],
         about: ['eyebrow', 'intro', 'bio'],
+        education: ['title', 'institution', 'period', 'location', 'description'],
+        experience: ['title', 'company', 'period', 'location', 'employment_type', 'description'],
         project: ['title', 'description', 'tools', 'url', 'source_url'],
         skill: ['title', 'description'],
         publication: ['title', 'authors', 'venue', 'year', 'summary', 'url'],
-        certificate: ['title', 'issuer', 'year', 'url', 'image', 'image_alt'],
+        certificate: ['title', 'issuer', 'year', 'credential_id', 'url', 'image', 'image_alt'],
         contact: ['heading', 'message']
       };
-      const data = { profile: {}, about: {}, contact: {}, project: [], skill: [], publication: [], certificate: [] };
+      const data = { profile: {}, about: {}, contact: {}, education: [], experience: [], project: [], skill: [], publication: [], certificate: [] };
       const seen = new Set();
       let section, entry, key;
       text.replace(/^\uFEFF/, '').split(/\r?\n/).forEach((line, index) => {
@@ -294,7 +318,7 @@
         entry[key] = field[2].trim();
       });
       if (!data.profile.name) throw new Error('Add name = Your Name under [profile].');
-      for (const type of ['project', 'skill', 'publication', 'certificate']) {
+      for (const type of ['education', 'experience', 'project', 'skill', 'publication', 'certificate']) {
         for (const [index, item] of data[type].entries()) {
           if (!item.title) throw new Error(`Add a title to ${type} ${index + 1}, or remove that section.`);
         }
@@ -322,6 +346,9 @@
       if (!url) return;
       const link = element('a', 'entry-link', label);
       link.href = safeURL(url);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.setAttribute('aria-label', `${label.replace(/\s*↗$/, '')} (new tab)`);
       parent.append(link);
     }
     function fillList(id, items, build, emptyMessage) {
@@ -356,6 +383,18 @@
       document.title = `${data.profile.name} — Portfolio`;
       document.querySelector('meta[name="description"]').content = data.profile.description || `${data.profile.name} — personal portfolio.`;
 
+      for (const type of ['experience', 'education']) {
+        fillList(`${type}-list`, data[type], item => {
+          const row = element('article', 'background-entry');
+          row.append(element('h3', '', item.title));
+          const organization = type === 'education' ? item.institution : item.company;
+          if (organization) row.append(element('p', 'text-content', organization));
+          const details = [item.period, item.location, type === 'experience' ? item.employment_type : ''].filter(Boolean).join(' · ');
+          if (details) row.append(element('p', 'entry-meta text-content', details));
+          if (item.description) row.append(element('p', 'entry-description text-content', item.description));
+          return row;
+        }, `No ${type} listed yet.`);
+      }
       fillList('project-list', data.project, item => {
         const row = element('article', 'project-row');
         const body = element('div');
@@ -388,26 +427,31 @@
         }
         if (item.image) {
           const imageURL = safeURL(item.image);
-          const link = element('a', 'certificate-image-link');
-          link.href = imageURL;
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          link.setAttribute('aria-label', `Open image of ${item.title} (new tab)`);
-          const image = element('img', 'certificate-image');
-          image.alt = item.image_alt || `${item.title} certificate`;
-          image.loading = 'lazy';
-          image.decoding = 'async';
-          image.referrerPolicy = 'no-referrer';
-          image.addEventListener('error', () => showImagePlaceholder('Image unavailable'), { once: true });
-          image.src = imageURL;
-          link.append(image);
-          preview.append(link);
-          preview.classList.add('has-image');
+          if (new URL(imageURL).pathname.toLowerCase().endsWith('.pdf')) {
+            showImagePlaceholder('PDF needs an image preview');
+          } else {
+            const link = element('a', 'certificate-image-link');
+            link.href = imageURL;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.setAttribute('aria-label', `Open image of ${item.title} (new tab)`);
+            const image = element('img', 'certificate-image');
+            image.alt = item.image_alt || `${item.title} certificate`;
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            image.referrerPolicy = 'no-referrer';
+            image.addEventListener('error', () => showImagePlaceholder('Image unavailable'), { once: true });
+            image.src = imageURL;
+            link.append(image);
+            preview.append(link);
+            preview.classList.add('has-image');
+          }
         } else {
           showImagePlaceholder('No image added');
         }
         row.append(preview);
         row.append(element('h3', '', item.title), element('p', 'text-content', [item.issuer, item.year].filter(Boolean).join(' · ')));
+        if (item.credential_id) row.append(element('p', 'credential-id', `Credential ID: ${item.credential_id}`));
         addLink(row, 'View certificate ↗', item.url);
         return row;
       }, 'No certificates listed yet.');
@@ -457,7 +501,7 @@
 
     // Only the selected section is visible. Scrolling never changes sections.
     const navLinks = [...document.querySelectorAll('nav a')];
-    const sections = [...document.querySelectorAll('main section')];
+    const sections = [...document.querySelectorAll('#portfolio-content > section')];
     function sectionFromHash() {
       const id = location.hash.slice(1);
       return sections.some(section => section.id === id) ? id : 'about';
